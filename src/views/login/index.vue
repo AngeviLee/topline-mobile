@@ -1,12 +1,12 @@
 <template>
   <div>
-    <router-view />
+    <p>login component</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: 'loginIndex',
   data () {
     return {}
   },
