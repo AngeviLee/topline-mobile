@@ -7,6 +7,8 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 // 引入适配所需要的lib-fiexible
 import 'amfe-flexible'
+// 引入自定义全局样式
+import './styles/index.less'
 Vue.use(Vant)
 
 Vue.config.productionTip = false
