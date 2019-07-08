@@ -5,7 +5,8 @@ import store from './store'
 // 导入vant
 import Vant from 'vant'
 import 'vant/lib/index.css'
-
+// 引入适配所需要的lib-fiexible
+import 'amfe-flexible'
 Vue.use(Vant)
 
 Vue.config.productionTip = false
