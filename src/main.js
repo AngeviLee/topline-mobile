@@ -10,9 +10,18 @@ import 'amfe-flexible'
 // 引入自定义全局样式
 import './styles/index.less'
 // 引入表单验证插件
-import VeeValidate from 'vee-validate'
+// 1.引入语言包
+import zhCN from 'vee-validate/dist/locale/zh_CN'
+import VeeValidate, { Validator } from 'vee-validate'
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+  // 配置触发时机
+  // 配置改变的时候去触发校验，默认是input
+  events: ''
+})
+
+// 配置语言
+Validator.localize('zh_CN', zhCN)
 
 Vue.use(Vant)
 

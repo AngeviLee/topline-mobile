@@ -8,16 +8,21 @@
       <van-cell-group>
         <van-field
           left-icon="contact"
+          v-validate="'required'"
+          name="mobile"
+          :error-message="errors.first('mobile')"
           v-model="user.mobile"
           required
           clearable
           label="手机号"
           placeholder="15931441062"
-          :error-message="mobileMessage"
         />
 
         <van-field
           v-model="user.code"
+          v-validate="'required'"
+          name="code"
+          :error-message="errors.first('code')"
           left-icon="lock"
           type="password"
           label="密码"
@@ -44,25 +49,43 @@ export default {
       user: {
         mobile: '15931441062',
         code: '123456'
-      },
-      mobileMessage: ''
+      }
     }
+  },
+  created () {
+    this.configCustomMessages()
   },
   methods: {
     async handleLogin () {
-      if (this.user.mobile.trim().length) {
-        this.mobileMessage = ''
-      } else {
-        this.mobileMessage = '请输入手机号'
-        return
-      }
       try {
-        const res = await login(this.user)
-        console.log(res)
+        this.$validator.validate().then(async valid => {
+          // 如果验证失败，怎什么都不做
+          if (!valid) {
+            return
+          }
+          // 表单验证通过，提交表单
+          const res = await login(this.user)
+          // 通过提交mutation更新Vuex的状态
+          this.$store.commit('setUser', res)
+        })
       } catch (err) {
         console.log(err)
         console.log('登陆失败')
       }
+    },
+    configCustomMessages () {
+      const dict = {
+        custom: {
+          mobile: {
+            required: '手机号不能为空'
+          },
+          code: {
+            required: () => '密码不能为空'
+          }
+        }
+      }
+      // 只配置到当前作用域
+      this.$validator.localize('zh_CN', dict)
     }
   },
   components: {}
