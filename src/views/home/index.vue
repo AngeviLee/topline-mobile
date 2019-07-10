@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <van-nav-bar title="首页" />
-    <van-tabs v-model="activeChannelIndex ">
+    <van-nav-bar title="首页" fixed />
+    <van-tabs v-model="activeChannelIndex" class="channel-tabs">
       <van-tab title="标签 1">
         <!-- 下拉列表 -->
         <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
@@ -59,4 +59,21 @@ export default {
 </script>
 
 <style lang='less' scoped>
+// 设备里看到的是50px,但我们需要100px;
+// 为看到下面的没有更多了
+.channel-tabs {
+  margin-bottom: 100px;
+}
+// 因为有scoped作用域，我们加不上类名，两种方案：
+// 1.去掉scoped
+// 2.用深度作用域 /deep/   vue官方提供的
+// 固定list列表
+.channel-tabs /deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 92px;
+}
+// 为显示全列表对应的tabs内容
+.channel-tabs /deep/ .van-tabs__content {
+  margin-top: 100px;
+}
 </style>
