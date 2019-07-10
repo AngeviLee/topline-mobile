@@ -9,6 +9,11 @@ import 'vant/lib/index.css'
 import 'amfe-flexible'
 // 引入自定义全局样式
 import './styles/index.less'
+// 引入表单验证插件
+import VeeValidate from 'vee-validate'
+
+Vue.use(VeeValidate)
+
 Vue.use(Vant)
 
 Vue.config.productionTip = false
