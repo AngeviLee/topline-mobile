@@ -8,7 +8,7 @@ export const getUser = () => {
 }
 // 保存用户信息
 export const saveUser = (data) => {
-  window.localStorage.setItem('USER_KEY', JSON.stringify(data))
+  window.localStorage.setItem(USER_KEY, JSON.stringify(data))
 }
 // 删除用户信息
 export const removeUser = () => {

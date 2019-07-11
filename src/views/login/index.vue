@@ -48,7 +48,7 @@ export default {
     return {
       user: {
         mobile: '15931441062',
-        code: '123456'
+        code: '246810'
       },
       loginLoading: false // 控制登录请求的 loading 状态
     }
@@ -68,9 +68,10 @@ export default {
           return
         }
         // 表单验证通过，提交表单
-        const res = await login(this.user)
+        const data = await login(this.user)
+        console.log(data)
         // 通过提交mutation更新Vuex的状态
-        this.$store.commit('setUser', res)
+        this.$store.commit('setUser', data)
         // 表单通过验证，先粗暴的跳到来的页面
         this.$router.push({
           name: 'home'
