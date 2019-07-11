@@ -1,7 +1,7 @@
 // 封装文章相关接口请求函数
 import request from '@/utils/request'
 
-export const articles = ({
+export const getArticles = ({
   // 频道
   channelId,
   // 时间戳
