@@ -61,12 +61,25 @@ export default {
           channels = data.channels
         }
       }
+      // 修改channels,将这个数据结构修改为满足我们使用的需求
+      channels.forEach(item => {
+        // 用来存储文章的列表
+        item.articles = []
+        // 控制当前频道的下拉刷新loading状态
+        item.drownPullLoading = false
+        // 控制当前频道的上啦加载更多的loading状态
+        item.upPullLoading = false
+        // 控制当前频道数据是否加载完毕
+        item.upPullFinished = false
+      })
       // 将自定义的频道列表赋值给data中的频道列表
       this.channels = channels
     },
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
+        console.log('onLoad')
+        // 异步更新数据
         for (let i = 0; i < 10; i++) {
           this.list.push(this.list.length + 1)
         }
