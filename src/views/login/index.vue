@@ -69,7 +69,7 @@ export default {
         }
         // 表单验证通过，提交表单
         const data = await login(this.user)
-        console.log(data)
+        // console.log(data)
         // 通过提交mutation更新Vuex的状态
         this.$store.commit('setUser', data)
         // 表单通过验证，先粗暴的跳到来的页面
