@@ -27,6 +27,15 @@ Vue.use(Vant)
 
 Vue.config.productionTip = false
 
+// 给Vue原型上添加一个方法
+Vue.prototype.$sleep = time => {
+  return new Promise((resolve, reject) => {
+    window.setTimeout(() => {
+      resolve()
+    }, time)
+  })
+}
+
 new Vue({
   router,
   store,

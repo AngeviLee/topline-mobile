@@ -99,12 +99,27 @@ export default {
     // 上拉加载更多数据
     async onLoad () {
       console.log('onload')
+
+      // 缓冲加载
+      await this.$sleep(800)
+
       let data = []
       data = await this.loadArticles()
 
+      // 如果没有pre_timestamp,且数数组是空的，则意味着没有数据了
+      if (!data.pre_timestamp && !data.results.length) {
+        // 设置该频道数据已记载完毕，组件自动给出提示，并且不再onLoad
+        this.activeChannel.upPullFinished = true
+        // 取消loading
+        this.activeChannel.upPullLoading = false
+        // 代码不往后执行了
+        return
+      }
+      // console.log(data)
       // pre_timestamp 下一页的页码
       // results 文章列表
       // 解决初始化的时候没有最新推荐数据的问题（没有最新数据，那就加载上一次推荐数据）
+      // 加载的是上一页数据（自我理解）
       if (data.pre_timestamp && !data.results.length) {
         this.activeChannel.timestamp = data.pre_timestamp
 
