@@ -74,9 +74,7 @@ export default {
       } else {
         // 未登录
         // 如果有本地存储数据则使用本地存储中的频道列表
-        const localChannels = JSON.parse(
-          window.localStorage.getItem('channels')
-        )
+        const localChannels = JSON.parse(window.localStorage.getItem('channels'))
         if (localChannels) {
           channels = localChannels
         } else {
