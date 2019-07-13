@@ -127,8 +127,15 @@ export default {
       this.$emit('update:active-index', index)
       this.$emit('input', false)
     },
-    deleteChannel () {
+    deleteChannel (item, index) {
+      // 删除
+      this.userChannels.splice(index, 1)
 
+      if (this.user) {
+        // 登录，发请求删除
+        return
+      }
+      window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
     },
     handleUserChanneClick (item, index) {
       if (!this.isEdit) {
