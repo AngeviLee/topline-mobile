@@ -7,6 +7,7 @@
     get-container="body"
     :lazy-render="false"
   >
+    <!-- 我的频道 -->
     <div class="channel">
       <div class="channel-head">
         <div>
@@ -27,7 +28,7 @@
         </van-grid-item>
       </van-grid>
     </div>
-
+    <!-- 推荐频道 -->
     <div class="channel">
       <div class="channel-head">
         <div>
@@ -47,6 +48,8 @@
 </template>
 
 <script>
+// 引入封装好的所有频道接口
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'HomeChannel',
   props: {
@@ -65,10 +68,21 @@ export default {
   },
   data () {
     return {
-      show: true
+      // show: true
+      // 用来存储所有的频道列表
+      allChannels: []
     }
   },
-  components: {}
+  created () {
+    this.loadAllChannels()
+  },
+  methods: {
+    async loadAllChannels () {
+      const data = await getAllChannels()
+      // console.log(data)
+      this.allChannels = data.channels
+    }
+  }
 }
 </script>
 
