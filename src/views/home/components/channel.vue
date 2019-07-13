@@ -36,7 +36,7 @@
           <van-icon
             class="close-icon"
             name="close"
-            v-show="isEdit"
+            v-show="isEdit && !aliveChannels.includes(Item.name)"
           />
         </van-grid-item>
       </van-grid>
@@ -90,7 +90,9 @@ export default {
       // 用来存储所有的频道列表
       allChannels: [],
       // 编辑状态标志
-      isEdit: false
+      isEdit: false,
+      // 永远存活的列表
+      aliveChannels: ['推荐', 'css']
     }
   },
   computed: {
@@ -170,7 +172,7 @@ export default {
         this.changeChannel(item, index)
       } else {
         // 编辑转态：删除频道
-        this.deleteChannel(item, index)
+        !this.aliveChannels.includes(item.name) && this.deleteChannel(item, index)
       }
     }
   }
