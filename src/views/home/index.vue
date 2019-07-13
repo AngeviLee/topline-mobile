@@ -41,7 +41,7 @@
     <HomeChannel
       v-model="isChannelShow"
       :user-channels="channels"
-      :action-index="activeChannelIndex"
+      :active-index="activeChannelIndex"
     ></HomeChannel>
   </div>
 </template>
@@ -232,7 +232,7 @@ export default {
 .channel-tabs /deep/ .van-tabs__content {
   margin-top: 100px;
 }
-.channel-tabs /deep/ .wap-nav {
+.wrap-nav {
   position: fixed;
   right: 0;
 }
