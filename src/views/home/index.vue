@@ -5,7 +5,11 @@
       <div slot="nav-right" class="wrap-nav" @click="isChannelShow = true">
         <van-icon name="wap-nav" />
       </div>
-      <van-tab v-for="channelItem in channels" :key="channelItem.id" :title="channelItem.name">
+      <van-tab
+        v-for="channelItem in channels"
+        :key="channelItem.id"
+        :title="channelItem.name"
+      >
         <!-- 下拉列表 -->
         <van-pull-refresh
           v-model="channelItem.drownPullLoading"
@@ -36,7 +40,7 @@
     -->
     <HomeChannel
       v-model="isChannelShow"
-      :channels="channels"
+      :user-channels="channels"
       :action-index="activeChannelIndex"
     ></HomeChannel>
   </div>

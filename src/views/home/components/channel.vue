@@ -1,39 +1,47 @@
 <template>
   <van-popup
-    position="bottom"
     :style="{ height: '95%' }"
     :value="value"
-    @input="$emit('input', $event)"
+    @input="$emit('input',$event)"
+    position="bottom"
+    get-container="body"
+    :lazy-render="false"
   >
-    <div class="close"></div>
-    <div class="channels">
-      <!-- 头部 -->
-      <div class="head">
+    <div class="channel">
+      <div class="channel-head">
         <div>
-          <span>我的频道</span>
-          <span>点击进入频道</span>
+          <span class="title">我的频道</span>
+          <span class="desc">点击进入频道</span>
         </div>
         <div>
-          <button>编辑</button>
+          <van-button type="danger" plain size="mini">编辑</van-button>
         </div>
       </div>
-      <!-- 内容 -->
-      <div class="content">
-        <!-- 宫格组件 -->
-        <van-grid :gutter="10" clickable>
-          <van-grid-item
-            v-for="(channelItem, index) in channels"
-            :key="channelItem.id"
-          >
-          <!-- 因为在宫格上加不上高亮样式，所以利用span插进宫格组件中 -->
-            <span
-              slot="text"
-              class="text"
-              :class="{ active: index === activeIndex }"
-            >{{ channelItem.name }}</span>
-          </van-grid-item>
-        </van-grid>
+      <van-grid class="channel-content" :gutter="10" clickable>
+        <van-grid-item
+          v-for="Item in userChannels"
+          :key="Item.id"
+        >
+          <span class="text">{{ Item.name }}</span>
+          <!-- <van-icon class="close-icon" name="close" /> -->
+        </van-grid-item>
+      </van-grid>
+    </div>
+
+    <div class="channel">
+      <div class="channel-head">
+        <div>
+          <span class="title">频道推荐</span>
+          <span class="desc">点击添加频道</span>
+        </div>
       </div>
+      <van-grid class="channel-content" :gutter="10" clickable>
+        <van-grid-item v-for="value in 8" :key="value" text="文字">
+          <div class="info">
+            <span class="text">文字</span>
+          </div>
+        </van-grid-item>
+      </van-grid>
     </div>
   </van-popup>
 </template>
@@ -46,7 +54,7 @@ export default {
       type: Boolean,
       default: false
     },
-    channels: {
+    userChannels: {
       type: Array,
       default: () => []
     },
@@ -64,14 +72,41 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-.channels {
-  .content {
+<style lang="less" scoped>
+.channel {
+  .channel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    .title {
+      font-size: 30px;
+      margin-right: 5px;
+    }
+    .desc {
+      font-size: 12px;
+    }
+    .action {
+    }
+  }
+  .channel-content {
     .text {
-      font-size: 20px;
+      font-size: 16px;
     }
     .active {
       color: red;
+    }
+    .close-icon {
+      font-size: 20px;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      z-index: 999;
+      background-color: #fff;
+    }
+    .info {
+      display: flex;
+      align-items: center;
     }
   }
 }
