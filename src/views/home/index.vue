@@ -34,7 +34,11 @@
       v-bind:value="数据"
       v-on:input="数据=$event" 的结合
     -->
-    <HomeChannel v-model="isChannelShow"></HomeChannel>
+    <HomeChannel
+      v-model="isChannelShow"
+      :channels="channels"
+      :action-index="activeChannelIndex"
+    ></HomeChannel>
   </div>
 </template>
 
@@ -57,7 +61,8 @@ export default {
       // 频道列表
       channels: [],
       // 弹出层显示状态
-      isChannelShow: false
+      // isChannelShow: false
+      isChannelShow: true
     }
   },
   computed: {
