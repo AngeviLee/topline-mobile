@@ -40,6 +40,7 @@
         <van-grid-item
           v-for="item in recommendChannels"
           :key="item.id"
+          @click="handleAddChannel(item)"
         >
           <div class="info">
             <span class="text">{{ item.name }}</span>
@@ -53,6 +54,7 @@
 <script>
 // 引入封装好的所有频道接口
 import { getAllChannels } from '@/api/channel'
+import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
   props: {
@@ -82,7 +84,10 @@ export default {
       // 利用map方法，从用户频道列表中映射一个数组。数组中存储了所有用户频道的id
       const duplicates = this.userChannels.map(item => item.id)
       return this.allChannels.filter(item => !duplicates.includes(item.id))
-    }
+    },
+    // Vuex的辅助方法，用于将state中的数据映射到本地计算属性
+    // 说白就是user = this.$store.state.user
+    ...mapState(['user'])
   },
   created () {
     this.loadAllChannels()
@@ -92,6 +97,18 @@ export default {
       const data = await getAllChannels()
       // console.log(data)
       this.allChannels = data.channels
+    },
+    handleAddChannel (item) {
+      // 将点击添加的频道添加到用户频道
+      this.userChannels.push(item)
+
+      // 持久化的问题
+      // 如果用户已登录，则将数据请求添加到后端
+      if (this.user) {
+        return
+      }
+      // 如果未登录，则将数据持久化到本地存储
+      window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
     }
   }
 }
