@@ -2,7 +2,7 @@
   <div class="home">
     <van-nav-bar title="首页" fixed />
     <van-tabs v-model="activeChannelIndex" class="channel-tabs">
-      <div slot="nav-right" class="wrap-nav">
+      <div slot="nav-right" class="wrap-nav" @click="isChannelShow = true">
         <van-icon name="wap-nav" />
       </div>
       <van-tab v-for="channelItem in channels" :key="channelItem.id" :title="channelItem.name">
@@ -29,6 +29,12 @@
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
+    <!-- 频道管理组件 -->
+    <!-- v-model实际上是
+      v-bind:value="数据"
+      v-on:input="数据=$event" 的结合
+    -->
+    <HomeChannel v-model="isChannelShow"></HomeChannel>
   </div>
 </template>
 
@@ -37,19 +43,21 @@
 import { getUserChannels } from '@/api/channel.js'
 // 引入封装的文章接口文档列表
 import { getArticles } from '@/api/article'
+// 引入弹出层组件
+import HomeChannel from './components/channel'
 
 export default {
   name: 'homeIndex',
+  components: {
+    HomeChannel
+  },
   data () {
     return {
       activeChannelIndex: 0,
-      list: [],
-      loading: false,
-      finished: false,
-      // 下拉绑定状态
-      isLoading: false,
       // 频道列表
-      channels: []
+      channels: [],
+      // 弹出层显示状态
+      isChannelShow: false
     }
   },
   computed: {
