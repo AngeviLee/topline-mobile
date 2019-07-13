@@ -2,6 +2,9 @@
   <div class="home">
     <van-nav-bar title="首页" fixed />
     <van-tabs v-model="activeChannelIndex" class="channel-tabs">
+      <div slot="nav-right" class="wrap-nav">
+        <van-icon name="wap-nav" />
+      </div>
       <van-tab v-for="channelItem in channels" :key="channelItem.id" :title="channelItem.name">
         <!-- 下拉列表 -->
         <van-pull-refresh
@@ -86,7 +89,9 @@ export default {
       } else {
         // 未登录
         // 如果有本地存储数据则使用本地存储中的频道列表
-        const localChannels = JSON.parse(window.localStorage.getItem('channels'))
+        const localChannels = JSON.parse(
+          window.localStorage.getItem('channels')
+        )
         if (localChannels) {
           channels = localChannels
         } else {
@@ -209,5 +214,9 @@ export default {
 // 为显示全列表对应的tabs内容
 .channel-tabs /deep/ .van-tabs__content {
   margin-top: 100px;
+}
+.channel-tabs /deep/ .wap-nav {
+  position: fixed;
+  right: 0;
 }
 </style>
