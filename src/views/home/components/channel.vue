@@ -37,9 +37,12 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="value in 8" :key="value" text="文字">
+        <van-grid-item
+          v-for="item in recommendChannels"
+          :key="item.id"
+        >
           <div class="info">
-            <span class="text">文字</span>
+            <span class="text">{{ item.name }}</span>
           </div>
         </van-grid-item>
       </van-grid>
@@ -71,6 +74,14 @@ export default {
       // show: true
       // 用来存储所有的频道列表
       allChannels: []
+    }
+  },
+  computed: {
+    // 过滤出不包含用户频道的列表数据
+    recommendChannels () {
+      // 利用map方法，从用户频道列表中映射一个数组。数组中存储了所有用户频道的id
+      const duplicates = this.userChannels.map(item => item.id)
+      return this.allChannels.filter(item => !duplicates.includes(item.id))
     }
   },
   created () {
