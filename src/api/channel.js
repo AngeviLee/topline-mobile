@@ -24,3 +24,17 @@ export const deleteUserChannel = channeId => {
     url: `/app/v1_0/user/channels/${channeId}`
   })
 }
+// 添加用户频道
+// channels:[ { id: 频道id, seq:顺序序号 }]
+// 数据的顺序都从2开始
+// 因为 推荐是用户默认频道，推荐从1开始
+// [{id:1, seq: 1}, {id: 频道id, seq:序号}]
+export const resetUserChannel = channels => {
+  return request({
+    method: 'PUT',
+    url: '/app/v1_0/user/channels',
+    data: {
+      channels
+    }
+  })
+}

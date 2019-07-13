@@ -33,7 +33,11 @@
             class="text"
             :class="{ active: index === activeIndex && !isEdit }"
           >{{ Item.name }}</span>
-          <van-icon class="close-icon" name="close" v-show="isEdit" />
+          <van-icon
+            class="close-icon"
+            name="close"
+            v-show="isEdit"
+          />
         </van-grid-item>
       </van-grid>
     </div>
@@ -62,7 +66,7 @@
 
 <script>
 // 引入封装好的所有频道接口
-import { getAllChannels, deleteUserChannel } from '@/api/channel'
+import { getAllChannels, deleteUserChannel, resetUserChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
@@ -122,13 +126,22 @@ export default {
       })
       this.allChannels = data.channels
     },
-    handleAddChannel (item) {
+    async handleAddChannel (item) {
       // 将点击添加的频道添加到用户频道
       this.userChannels.push(item)
 
       // 持久化的问题
       // 如果用户已登录，则将数据请求添加到后端
       if (this.user) {
+        // 不包含推荐
+        const data = this.userChannels.slice(1).map((item, index) => {
+          return {
+            // 频道id
+            id: item.id,
+            seq: index + 2
+          }
+        })
+        await resetUserChannel(data)
         return
       }
       // 如果未登录，则将数据持久化到本地存储
