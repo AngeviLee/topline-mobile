@@ -17,3 +17,10 @@ export const getAllChannels = () => {
     url: '/app/v1_0/channels'
   })
 }
+// 删除用户指定频道
+export const deleteUserChannel = channeId => {
+  return request({
+    method: 'DELETE',
+    url: `/app/v1_0/user/channels/${channeId}`
+  })
+}

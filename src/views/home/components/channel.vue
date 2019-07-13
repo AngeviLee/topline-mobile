@@ -62,7 +62,7 @@
 
 <script>
 // 引入封装好的所有频道接口
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, deleteUserChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
@@ -140,12 +140,13 @@ export default {
       this.$emit('update:active-index', index)
       this.$emit('input', false)
     },
-    deleteChannel (item, index) {
+    async deleteChannel (item, index) {
       // 删除
       this.userChannels.splice(index, 1)
 
       if (this.user) {
         // 登录，发请求删除
+        await deleteUserChannel(item.id)
         return
       }
       window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
