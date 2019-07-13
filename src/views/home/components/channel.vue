@@ -107,6 +107,19 @@ export default {
     async loadAllChannels () {
       const data = await getAllChannels()
       // console.log(data)
+      // 为防止添加后加载冲突
+      data.channels.forEach(item => {
+        // 用来存储文章的列表
+        item.articles = []
+        // 控制当前频道的下拉刷新loading状态
+        item.drownPullLoading = false
+        // 控制当前频道的上啦加载更多的loading状态
+        item.upPullLoading = false
+        // 控制当前频道数据是否加载完毕
+        item.upPullFinished = false
+        // 存放下一页的时间戳
+        item.timestamp = Date.now()
+      })
       this.allChannels = data.channels
     },
     handleAddChannel (item) {
