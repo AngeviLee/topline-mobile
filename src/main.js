@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-// 导入vant
-import Vant from 'vant'
+// 导入vant,导入图片懒加载
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
 // 引入适配所需要的lib-fiexible
 import 'amfe-flexible'
@@ -24,6 +24,7 @@ Vue.use(VeeValidate, {
 Validator.localize('zh_CN', zhCN)
 
 Vue.use(Vant)
+Vue.use(Lazyload)
 
 Vue.config.productionTip = false
 
