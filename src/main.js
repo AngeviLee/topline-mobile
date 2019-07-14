@@ -25,6 +25,16 @@ dayjs.extend(relativeTime)
 // 配置中文使用的语言包
 dayjs.locale('zh-cn')
 
+// 注册一个全局过滤器来处理日期格式的展示
+// 过滤器就是一个函数，我们可以在模板中通过{{ 数据 | 过滤器 }} 来调用这个过滤器函数
+// 过滤器函数接收的参数就是你的数据，返回值就会绑定输出到使用的位置
+// {{ 数据 | relativeTime }}
+// 好处：任何组件的模板都可以通过 {{ 数据 | 过滤器 }} 来使用这里定义的过滤器
+// 说白了就是一个全局函数
+Vue.filter('relativeTime', value => {
+  return dayjs().from(value)
+})
+
 Vue.use(VeeValidate, {
   // 配置触发时机
   // 配置改变的时候去触发校验，默认是input
