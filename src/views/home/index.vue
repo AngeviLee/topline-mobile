@@ -52,6 +52,7 @@
                   <!-- 全局过滤器，Vue.filter(...)任何组件都可以使用 -->
                   <!-- 什么情况下建议使用过滤器？一般都是一些简单的文本格式操作 -->
                   <span>{{ articleItem.pubdate | relativeTime }}</span>
+                  <van-icon class="question" name="question" @click="isMoreActionShow=true"/>
                 </p>
               </div>
             </van-cell>
@@ -79,6 +80,8 @@
       :user-channels="channels"
       :active-index.sync="activeChannelIndex"
     ></HomeChannel>
+    <!-- 更多操作 -->
+    <MoreAction v-model="isMoreActionShow"/>
   </div>
 </template>
 
@@ -89,11 +92,14 @@ import { getUserChannels } from '@/api/channel.js'
 import { getArticles } from '@/api/article'
 // 引入弹出层组件
 import HomeChannel from './components/channel'
+// 引进更多操作组件
+import MoreAction from './components/more-action'
 
 export default {
   name: 'homeIndex',
   components: {
-    HomeChannel
+    HomeChannel,
+    MoreAction
   },
   data () {
     return {
@@ -101,7 +107,9 @@ export default {
       // 频道列表
       channels: [],
       // 弹出层显示状态
-      isChannelShow: false
+      isChannelShow: false,
+      // 更多操作组件状态
+      isMoreActionShow: false
     }
   },
   computed: {
@@ -270,5 +278,9 @@ export default {
 .wrap-nav {
   position: fixed;
   right: 0;
+}
+.question {
+  float: right;
+  font-size: 40px;
 }
 </style>
