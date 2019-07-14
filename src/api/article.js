@@ -19,3 +19,13 @@ export const getArticles = ({
     }
   })
 }
+// 封装不感兴趣的文章接口
+export const dislikeArticle = articlesId => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/article/dislikes',
+    data: {
+      target: articlesId
+    }
+  })
+}
