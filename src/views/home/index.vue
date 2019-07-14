@@ -5,11 +5,7 @@
       <div slot="nav-right" class="wrap-nav" @click="isChannelShow = true">
         <van-icon name="wap-nav" />
       </div>
-      <van-tab
-        v-for="channelItem in channels"
-        :key="channelItem.id"
-        :title="channelItem.name"
-      >
+      <van-tab v-for="channelItem in channels" :key="channelItem.id" :title="channelItem.name">
         <!-- 下拉列表 -->
         <van-pull-refresh
           v-model="channelItem.drownPullLoading"
@@ -24,11 +20,33 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
+            <!-- 展示文章列表更多内容 -->
             <van-cell
               v-for="articleItem in channelItem.articles"
               :key="articleItem.art_id"
               :title="articleItem.title"
-            />
+            >
+              <div slot="label">
+                <!-- 如果有封面图片。则显示 -->
+                <template v-if="articleItem.cover.type">
+                  <van-grid :column-num="3" :border="false">
+                    <van-grid-item
+                      v-for="(img, index) in articleItem.cover.images"
+                      :key="index"
+                    >
+                      <van-image :src="img" />
+                    </van-grid-item>
+                  </van-grid>
+                </template>
+                <p>
+                  <span>{{ articleItem.aut_name }}</span>
+                  &nbsp;
+                  <span>{{ articleItem.comm_count }}评论</span>
+                  &nbsp;
+                  <span>{{ articleItem.pubdate }}</span>
+                </p>
+              </div>
+            </van-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
@@ -75,8 +93,7 @@ export default {
       // 频道列表
       channels: [],
       // 弹出层显示状态
-      // isChannelShow: false
-      isChannelShow: true
+      isChannelShow: false
     }
   },
   computed: {
@@ -145,7 +162,7 @@ export default {
     },
     // 上拉加载更多数据
     async onLoad () {
-      console.log('onload')
+      // console.log('onload')
 
       // 缓冲加载
       await this.$sleep(800)
