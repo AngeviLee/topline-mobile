@@ -1,6 +1,8 @@
 import axios from 'axios'
 // 引入vuex中的state状态
 import store from '@/store'
+// 引入处理超出整数范围的大数字的第三方包
+import JSONbig from 'json-bigint'
 
 // axios.create用于创建一个axios实例，该实例和axios的功能是一模一样的
 // 说白了，这样就是克隆了一个axios
@@ -10,6 +12,17 @@ const request = axios.create({
   // 线上地址
   baseURL: 'http://ttapi.research.itcast.cn'
 })
+
+// 处理超出整数范围的大数字bigint
+request.defaults.transformResponse = [function (data) {
+  try {
+    // data 数据可能不是标准的 JSON 格式字符串，否则会导致 JSONbig.parse(data) 转换失败报错
+    return JSONbig.parse(data)
+  } catch (err) {
+    // 无法转换的数据直接原样返回
+    return data
+  }
+}]
 
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
