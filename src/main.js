@@ -13,6 +13,17 @@ import './styles/index.less'
 // 1.引入语言包
 import zhCN from 'vee-validate/dist/locale/zh_CN'
 import VeeValidate, { Validator } from 'vee-validate'
+// 引入dayjs处理时间格式
+import dayjs from 'dayjs'
+// 加载中文语言包
+import 'dayjs/locale/zh-cn'
+// dayjs的相对时间插件
+import relativeTime from 'dayjs/plugin/relativeTime'
+// 把插件注册到dayjs中
+dayjs.extend(relativeTime)
+
+// 配置中文使用的语言包
+dayjs.locale('zh-cn')
 
 Vue.use(VeeValidate, {
   // 配置触发时机
