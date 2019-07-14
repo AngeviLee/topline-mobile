@@ -6,7 +6,7 @@
     closeOnClickOverlay
   >
     <van-cell-group v-if="!isReportShow">
-      <van-cell icon="setting" title="不感兴趣"  />
+      <van-cell icon="setting" title="不感兴趣" @click="handleDislike" />
       <van-cell icon="setting" title="反馈垃圾内容" is-link @click="isReportShow = true" />
       <van-cell icon="setting" title="拉黑作者"  />
     </van-cell-group>
@@ -23,17 +23,27 @@
 </template>
 
 <script>
+// import { dislikeArticle } from '@/api/article'
 export default {
   name: 'MoreAction',
   props: {
     value: {
       type: Boolean,
       default: false
+    },
+    currentArticel: {
+      type: Object
     }
   },
   data () {
     return {
       isReportShow: false
+    }
+  },
+  methods: {
+    handleDislike () {
+      // dislikeArticle()
+      console.log(this.currentArticel)
     }
   },
   components: {}

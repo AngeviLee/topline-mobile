@@ -52,7 +52,7 @@
                   <!-- 全局过滤器，Vue.filter(...)任何组件都可以使用 -->
                   <!-- 什么情况下建议使用过滤器？一般都是一些简单的文本格式操作 -->
                   <span>{{ articleItem.pubdate | relativeTime }}</span>
-                  <van-icon class="question" name="question" @click="isMoreActionShow=true"/>
+                  <van-icon class="question" name="question" @click="handleShowMoreAction(articleItem)"/>
                 </p>
               </div>
             </van-cell>
@@ -81,7 +81,10 @@
       :active-index.sync="activeChannelIndex"
     ></HomeChannel>
     <!-- 更多操作 -->
-    <MoreAction v-model="isMoreActionShow"/>
+    <more-action
+      v-model="isMoreActionShow"
+      :current-articel="currentArticel"
+    />
   </div>
 </template>
 
@@ -109,7 +112,9 @@ export default {
       // 弹出层显示状态
       isChannelShow: false,
       // 更多操作组件状态
-      isMoreActionShow: false
+      isMoreActionShow: false,
+      // 默认文件记录
+      currentArticel: null
     }
   },
   computed: {
@@ -252,6 +257,12 @@ export default {
         withTop: 1
       })
       return data
+    },
+    handleShowMoreAction (article) {
+      // 当执行更多操作的文章记录起来，通过组件传值传给MoreAction组件
+      this.currentArticel = article
+      // 显示出弹框
+      this.isMoreActionShow = true
     }
   }
 }
