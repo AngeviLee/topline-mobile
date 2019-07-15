@@ -85,6 +85,7 @@
       v-model="isMoreActionShow"
       :current-articel="currentArticel"
       @dislike-success="handleDislikeSuccess"
+      @add-blacklist-success="handleDislikeSuccess"
     />
   </div>
 </template>
