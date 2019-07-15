@@ -13,18 +13,20 @@
 
      <van-cell-group v-else>
       <van-cell icon="arrow-left" @click="isReportShow = false" />
-      <van-cell icon="setting" title="拉黑作者"  />
-      <van-cell icon="setting" title="拉黑作者"  />
-      <van-cell icon="setting" title="拉黑作者"  />
-      <van-cell icon="setting" title="拉黑作者"  />
-      <van-cell icon="setting" title="拉黑作者"  />
+      <van-cell
+        icon="setting"
+        v-for="item in reportTypes"
+        :key="item.value"
+        :title="item.label"
+        @click="handleReportArticle(item.value)"
+      />
     </van-cell-group>
   </van-dialog>
 </template>
 
 <script>
-// 引入封装不喜欢文章的接口
-import { dislikeArticle } from '@/api/article'
+// 引入封装不喜欢文章的接口和举报文章接口
+import { dislikeArticle, reportArticle } from '@/api/article'
 // 引入封装的加入黑名单的方法接口
 import { addBlackList } from '@/api/user'
 export default {
@@ -40,7 +42,19 @@ export default {
   },
   data () {
     return {
-      isReportShow: false
+      isReportShow: false,
+      // 举报类型
+      reportTypes: [
+        { label: '标题夸张', value: 1 },
+        { label: '低俗色情', value: 2 },
+        { label: '错别字多', value: 3 },
+        { label: '旧闻重复', value: 4 },
+        { label: '广告软文', value: 5 },
+        { label: '内容不实', value: 6 },
+        { label: '涉嫌违法犯罪', value: 7 },
+        { label: '侵权', value: 8 },
+        { label: '其他问题', value: 0 }
+      ]
     }
   },
   methods: {
@@ -65,6 +79,26 @@ export default {
         this.$emit('add-blacklist-success')
       } catch (err) {
         this.$toast('操作失败')
+      }
+    },
+    async handleReportArticle (type) {
+      try {
+        await reportArticle({
+          articleId: this.currentArticel.art_id,
+          type
+        })
+        // 事件不是强制的，我只是给你提供了，用不用说你的事儿
+        this.$emit('report-success')
+        // 关闭对话框
+        this.$emit('input', false)
+        // 提示
+        this.$toast('举报成功')
+      } catch (err) {
+        if (err.reponse && err.reponse.status === 409) {
+          this.$toast('该文章已被举报过')
+        } else {
+          this.$toast('操作失败')
+        }
       }
     }
   },
