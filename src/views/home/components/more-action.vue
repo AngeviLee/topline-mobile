@@ -23,7 +23,8 @@
 </template>
 
 <script>
-// import { dislikeArticle } from '@/api/article'
+// 引入封装不喜欢文章的接口
+import { dislikeArticle } from '@/api/article'
 export default {
   name: 'MoreAction',
   props: {
@@ -41,9 +42,16 @@ export default {
     }
   },
   methods: {
-    handleDislike () {
-      // dislikeArticle()
-      console.log(this.currentArticel)
+    async handleDislike () {
+      // console.log(this.currentArticel)
+      try {
+        await dislikeArticle(this.currentArticel.art_id)
+
+        // 移除客户端的那个文章
+        this.$emit('dislike-success')
+      } catch (err) {
+        this.$toast('操作失败')
+      }
     }
   },
   components: {}

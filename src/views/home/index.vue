@@ -84,6 +84,7 @@
     <more-action
       v-model="isMoreActionShow"
       :current-articel="currentArticel"
+      @dislike-success="handleDislikeSuccess"
     />
   </div>
 </template>
@@ -263,6 +264,17 @@ export default {
       this.currentArticel = article
       // 显示出弹框
       this.isMoreActionShow = true
+    },
+    handleDislikeSuccess () {
+      // 获得当前激活频道的文章
+      const articles = this.activeChannel.articles
+      // 获得当前激活频道文章的索引
+      const delIndex = articles.findIndex(item => item === this.currentArticel)
+      // 从指定索引删除1个
+      articles.splice(delIndex, 1)
+      // 关闭弹出层
+      this.isMoreActionShow = false
+      this.$toast('操作成功')
     }
   }
 }
