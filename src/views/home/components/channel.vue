@@ -119,7 +119,7 @@ export default {
         item.articles = []
         // 控制当前频道的下拉刷新loading状态
         item.drownPullLoading = false
-        // 控制当前频道的上啦加载更多的loading状态
+        // 控制当前频道的上拉加载更多的loading状态
         item.upPullLoading = false
         // 控制当前频道数据是否加载完毕
         item.upPullFinished = false

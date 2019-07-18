@@ -22,6 +22,8 @@
 <script>
 // 引入封装的联想建议框
 import { getSuggestion } from '@/api/serach'
+// 引入lodash
+import { debounce } from 'lodash'
 
 export default {
   name: 'SearchIndex',
@@ -35,7 +37,23 @@ export default {
   },
   watch: {
     // 监视输入数据的改变，当数据发生变化，发请求获取搜索建议，展示到列表中
-    async searchText (text) {
+    // async searchText (text) {
+    // async searchText (text) {
+    //   // 去除首尾空格
+    //   text = text.trim()
+    //   // 非空判断
+    //   if (!text.length) {
+    //     return
+    //   }
+    //   // 请求获取建议
+    //   try {
+    //     const data = await getSuggestion(text)
+    //     this.suggestion = data.options
+    //   } catch (err) {
+    //     console.log(err)
+    //   }
+    // }
+    searchText: debounce(async function (text) {
       // 去除首尾空格
       text = text.trim()
       // 非空判断
@@ -49,7 +67,7 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }
+    }, 500)
   },
   components: {}
 }
