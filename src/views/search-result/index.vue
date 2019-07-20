@@ -26,6 +26,9 @@
 </template>
 
 <script>
+// 引进封装搜索的接口
+import { getSearch } from '@/api/serach'
+
 export default {
   name: 'SearchResult',
   data () {
@@ -38,6 +41,16 @@ export default {
       finished: false
     }
   },
+
+  async created () {
+    const data = await getSearch({
+      page: 2,
+      perPage: 20,
+      q: this.$route.params.q
+    })
+    console.log(data)
+  },
+
   methods: {
     onLoad () {
       // 异步更新数据
