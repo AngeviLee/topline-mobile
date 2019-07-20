@@ -19,7 +19,11 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell v-for="item in list" :key="item" :title="item" />
+      <van-cell
+        v-for="item in articles"
+        :key="item.art_id.toString()"
+        :title="item.title"
+      />
     </van-list>
     <!-- 文章列表 -->
   </div>
@@ -34,38 +38,51 @@ export default {
   data () {
     return {
       // 搜索列表
-      list: [],
+      articles: [],
       // 加载状态
       loading: false,
       // 搜索完毕，到底了
-      finished: false
+      finished: false,
+      page: 1,
+      perPage: 20
     }
   },
-
-  async created () {
-    const data = await getSearch({
-      page: 2,
-      perPage: 20,
-      q: this.$route.params.q
-    })
-    console.log(data)
+  computed: {
+    q () {
+      return this.$route.params.q
+    }
   },
+  // async created () {
+  //   const data = await getSearch({
+  //     page: 2,
+  //     perPage: 20,
+  //     q: this.$route.params.q
+  //   })
+  //   console.log(data)
+  // },
 
   methods: {
-    onLoad () {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
+    async onLoad () {
+      await this.$sleep(800)
+      const data = await getSearch({
+        page: this.page,
+        perPage: this.perPage,
+        q: this.q
+      })
+      // 如果没有数据了
+      if (!data.results.length) {
+        // 取消loading
         this.loading = false
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+        // 设置数据已加载结束
+        this.finished = true
+        return
+      }
+      // 如果有数据，将数据push到数组中加载更多
+      this.articles.push(...data.results)
+      // 更新下一次加载更多的页码
+      this.page += 1
+      // 本地数据加载完毕，关闭loading（它每次onLoad的时会自动将loading设置为true)
+      this.loading = false
     }
   },
   components: {}
