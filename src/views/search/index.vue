@@ -11,22 +11,36 @@
     </form>
     <!-- 搜索框 -->
     <!-- 联想建议 -->
-    <van-cell-group>
-      <van-cell
-        v-for="item in suggestion"
-        :key="item"
-        icon="search"
-        @click="handleSearch(item)"
-      >
+    <van-cell-group v-if="suggestion.length && searchText.length">
+      <van-cell v-for="item in suggestion" :key="item" icon="search" @click="handleSearch(item)">
         <!-- 不能展示带有html标签的字符 -->
         <!-- 过滤器： 过滤器只能用在{{}}和v-bind中 -->
         <div slot="title" v-html="highlight(item, searchText)"></div>
       </van-cell>
+      <!-- 历史记录 -->
+      <van-cell title="历史记录">
+        <van-icon
+          v-show="!isDeleteShow"
+          slot="right-icon"
+          name="delete"
+          style="line-height: inherit;"
+          @click="isDeleteShow = true"
+        />
+        <div>
+          <span style="margin-right: 10px;">全部删除</span>
+          <span @click="isDeleteShow = false">完成</span>
+        </div>
+      </van-cell>
+      <van-cell title="hello">
+        <van-icon
+          v-show="isDeleteShow"
+          slot="right-icon"
+          name="close"
+          style="line-height: inherit;"
+        />
+      </van-cell>
+      <!-- 历史记录 -->
     </van-cell-group>
-    <!-- 联想建议 -->
-
-    <!-- 历史记录 -->
-    <!-- 历史记录 -->
   </div>
 </template>
 
@@ -43,7 +57,8 @@ export default {
       // 搜索框的关键词内容
       searchText: '',
       // 声明一个数组存放联想建议
-      suggestion: []
+      suggestion: [],
+      isDeleteShow: false
     }
   },
   watch: {

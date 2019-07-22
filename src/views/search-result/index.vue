@@ -52,15 +52,13 @@ export default {
       return this.$route.params.q
     }
   },
-  // async created () {
-  //   const data = await getSearch({
-  //     page: 2,
-  //     perPage: 20,
-  //     q: this.$route.params.q
-  //   })
-  //   console.log(data)
-  // },
-
+  activated () {
+    console.log('actived')
+  },
+  deactivated () {
+    // 手动销毁当前实例，禁用缓存
+    this.$destroy()
+  },
   methods: {
     async onLoad () {
       await this.$sleep(800)
