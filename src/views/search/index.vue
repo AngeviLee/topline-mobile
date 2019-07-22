@@ -7,6 +7,7 @@
         v-model="searchText"
         show-action
         @search="handleSearch(searchText)"
+        @cancel="$router.back()"
       />
     </form>
     <!-- 搜索框 -->
@@ -34,7 +35,12 @@
           <span @click="isDeleteShow = false">完成</span>
         </div>
       </van-cell>
-      <van-cell v-for="(item, index) in searchHistories" :key="item" :title="item">
+      <van-cell
+        v-for="(item, index) in searchHistories"
+        :key="item"
+        :title="item"
+        @click="handleSearch(item)"
+      >
         <van-icon
           v-show="isDeleteShow"
           slot="right-icon"
@@ -106,6 +112,9 @@ export default {
       const data = JSON.stringify(this.searchHistories)
       window.localStorage.setItem('search-histories', data)
     }
+  },
+  deactivated () {
+    this.$destroy()
   },
   methods: {
     highlight (text, keyword) {
