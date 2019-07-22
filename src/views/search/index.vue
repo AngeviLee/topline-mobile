@@ -17,7 +17,10 @@
         <!-- 过滤器： 过滤器只能用在{{}}和v-bind中 -->
         <div slot="title" v-html="highlight(item, searchText)"></div>
       </van-cell>
-      <!-- 历史记录 -->
+    </van-cell-group>
+    <!-- 联想建议 -->
+    <!-- 历史记录 -->
+    <van-cell-group v-if="searchHistories.length && !searchText.length">
       <van-cell title="历史记录">
         <van-icon
           v-show="!isDeleteShow"
@@ -26,17 +29,18 @@
           style="line-height: inherit;"
           @click="isDeleteShow = true"
         />
-        <div>
-          <span style="margin-right: 10px;">全部删除</span>
+        <div v-show="isDeleteShow">
+          <span style="margin-right: 10px;" @click="searchHistories= []">全部删除</span>
           <span @click="isDeleteShow = false">完成</span>
         </div>
       </van-cell>
-      <van-cell title="hello">
+      <van-cell v-for="(item, index) in searchHistories" :key="item" :title="item">
         <van-icon
           v-show="isDeleteShow"
           slot="right-icon"
           name="close"
           style="line-height: inherit;"
+          @click="searchHistories.splice(index, 1)"
         />
       </van-cell>
       <!-- 历史记录 -->
@@ -58,7 +62,10 @@ export default {
       searchText: '',
       // 声明一个数组存放联想建议
       suggestion: [],
-      isDeleteShow: false
+      // 控制删除的显示状态
+      isDeleteShow: true,
+      // 存储搜索历史纪录
+      searchHistories: JSON.parse(window.localStorage.getItem('search-histories')) || []
     }
   },
   watch: {
@@ -93,7 +100,12 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }, 500)
+    }, 500),
+
+    searchHistories () {
+      const data = JSON.stringify(this.searchHistories)
+      window.localStorage.setItem('search-histories', data)
+    }
   },
   methods: {
     highlight (text, keyword) {
@@ -106,6 +118,12 @@ export default {
       if (!queryText.length) {
         return
       }
+      // 记录搜索历史记录（放到顶部）
+      this.searchHistories.unshift(queryText)
+      // 数组去重
+      const data = new Set(this.searchHistories)
+      // 将去重的结果重新赋值到数组中
+      this.searchHistories = Array.from(data)
       // 跳转到搜索结果页面
       this.$router.push({
         name: 'search-result',
